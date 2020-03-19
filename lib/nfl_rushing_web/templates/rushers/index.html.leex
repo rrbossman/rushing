@@ -1,12 +1,50 @@
 <section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>A productive web framework that<br/>does not compromise speed or maintainability.</p>
+  <h1>NFL Rushing Statistics</h1>
 </section>
 
 <section class="phx-hero">
-  <%= Enum.map @rushers, fn(rusher) -> %>
-    <div><%= rusher.player %></div>
-  <% end %>
+  <table class="phx-stats-container">
+    <thead>
+      <tr class="phx-stats-row">
+        <td class="phx-stats-cell">Player</td>
+        <td class="phx-stats-cell">Team</td>
+        <td class="phx-stats-cell">Pos</td>
+        <td class="phx-stats-cell">Att</td>
+        <td class="phx-stats-cell">Att/G</td>
+        <td class="phx-stats-cell">Yards</td>
+        <td class="phx-stats-cell">Avg</td>
+        <td class="phx-stats-cell">Yards/G</td>
+        <td class="phx-stats-cell">TD</td>
+        <td class="phx-stats-cell">Lng</td>
+        <td class="phx-stats-cell">1st</td>
+        <td class="phx-stats-cell">1st%</td>
+        <td class="phx-stats-cell">20+</td>
+        <td class="phx-stats-cell">40+</td>
+        <td class="phx-stats-cell">Fum</td>
+      </tr>
+    </thead>
+    <tbody>
+      <%= Enum.map @rushers, fn(rusher) -> %>
+        <tr class="phx-stats-row">
+          <td class="phx-stats-cell"><%= rusher.player %></td>
+          <td class="phx-stats-cell"><%= rusher.team %></td>
+          <td class="phx-stats-cell"><%= rusher.pos %></td>
+          <td class="phx-stats-cell"><%= rusher.att %></td>
+          <td class="phx-stats-cell"><%= rusher.att_game %></td>
+          <td class="phx-stats-cell"><%= rusher.yds %></td>
+          <td class="phx-stats-cell"><%= rusher.avg %></td>
+          <td class="phx-stats-cell"><%= rusher.yds_game %></td>
+          <td class="phx-stats-cell"><%= rusher.td %></td>
+          <td class="phx-stats-cell"><%= rusher.lng %></td>
+          <td class="phx-stats-cell"><%= rusher.first %></td>
+          <td class="phx-stats-cell"><%= rusher.first_percent %></td>
+          <td class="phx-stats-cell"><%= rusher.twenty_plus %></td>
+          <td class="phx-stats-cell"><%= rusher.forty_plus %></td>
+          <td class="phx-stats-cell"><%= rusher.fum %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </section>
 
 <section class="row">

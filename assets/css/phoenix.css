@@ -18,7 +18,7 @@ h6{font-size: 1.4rem; letter-spacing: 0; line-height: 1.2}
 
 .container{
   margin: 0 auto;
-  max-width: 80.0rem;
+  max-width: 95%;
   padding: 0 2.0rem;
   position: relative;
   width: 100%
@@ -65,9 +65,7 @@ select {
 .phx-hero {
   text-align: center;
   border-bottom: 1px solid #e3e3e3;
-  background: #eee;
-  border-radius: 6px;
-  padding: 3em;
+  margin-top: 3rem;
   margin-bottom: 3rem;
   font-weight: 200;
   font-size: 120%;
@@ -131,4 +129,21 @@ header nav a {
     flex-basis: 527px;
     margin: 2rem 1rem;
   }
+}
+
+.phx-stats-container {
+  width: 100%;
+}
+
+.phx-stats-row {
+  width: 100%;
+}
+
+.phx-stats-row :first-child {
+  flex: 1 1 10%;
+  text-align: left;
+}
+
+.phx-stats-cell {
+  flex: 1 1 7%;
 }
