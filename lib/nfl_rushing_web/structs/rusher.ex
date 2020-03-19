@@ -21,6 +21,11 @@ defmodule NflRushingWeb.Rusher do
     with {:ok, body} <- File.read(filename), {:ok, json} <- Poison.decode(body), do: {:ok, json}
   end
 
+  def sorted_by_rushers(sort_by) do
+    {ok, list} = rushers
+    list |> Enum.sort_by(&Map.get(&1, String.to_existing_atom(sort_by)))
+  end
+
   defmemo rushers do
     {ok, json} = get_json("data/rushing.json")
 

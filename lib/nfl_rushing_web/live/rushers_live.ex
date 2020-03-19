@@ -1,5 +1,4 @@
 defmodule NflRushingWeb.RushersLive do
-  use NflRushingWeb, :controller
   use Phoenix.LiveView
 
   def render(assigns) do
@@ -9,5 +8,10 @@ defmodule NflRushingWeb.RushersLive do
   def mount(_, socket) do
     {ok, rushers} = NflRushingWeb.Rusher.rushers()
     {:ok, assign(socket, rushers: rushers)}
+  end
+
+  def handle_event("sort", %{"sort-by" => sort_by}, socket) do
+    rushers = NflRushingWeb.Rusher.sorted_by_rushers(sort_by)
+    {:noreply, assign(socket, rushers: rushers)}
   end
 end
