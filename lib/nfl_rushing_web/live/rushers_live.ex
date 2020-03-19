@@ -7,11 +7,25 @@ defmodule NflRushingWeb.RushersLive do
 
   def mount(_, socket) do
     {ok, rushers} = NflRushingWeb.Rusher.rushers()
-    {:ok, assign(socket, rushers: rushers)}
+    {:ok, assign(socket, rushers: rushers, sort_by: "player", direction: :asc)}
   end
 
   def handle_event("sort", %{"sort-by" => sort_by}, socket) do
-    rushers = NflRushingWeb.Rusher.sorted_by_rushers(sort_by)
-    {:noreply, assign(socket, rushers: rushers)}
+    {rushers, direction} =
+      case {socket.assigns.sort_by, socket.assigns.direction} do
+        {sort_by, :asc} ->
+          {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :desc), :desc}
+
+        {sort_by, :desc} ->
+          {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :asc), :asc}
+
+        {x, _} ->
+          {NflRushingWeb.Rusher.sorted_by_rushers(x, :asc), :asc}
+
+        _ ->
+          {socket.assigns.rushers, socket.assigns.direction}
+      end
+
+    {:noreply, assign(socket, rushers: rushers, sort_by: sort_by, direction: direction)}
   end
 end
