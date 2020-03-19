@@ -7,18 +7,24 @@ defmodule NflRushingWeb.RushersLive do
 
   def mount(_, socket) do
     {ok, rushers} = NflRushingWeb.Rusher.rushers()
-    {:ok, assign(socket, rushers: rushers, sort_by: "player", direction: :asc)}
+
+    {:ok,
+     assign(socket,
+       sorted_rushers: rushers,
+       rushers: rushers,
+       sort_by: "player",
+       direction: :asc,
+       filter_text: ""
+     )}
   end
 
   def handle_event("sort", %{"sort-by" => sort_by}, socket) do
     {rushers, direction} =
       case {socket.assigns.sort_by, socket.assigns.direction} do
         {^sort_by, :asc} ->
-          IO.puts(1)
           {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :desc), :desc}
 
         {^sort_by, :desc} ->
-          IO.puts(2)
           {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :asc), :asc}
 
         {_, _} ->
@@ -29,6 +35,25 @@ defmodule NflRushingWeb.RushersLive do
           {socket.assigns.rushers, socket.assigns.direction}
       end
 
-    {:noreply, assign(socket, rushers: rushers, sort_by: sort_by, direction: direction)}
+    {:noreply,
+     assign(socket,
+       sorted_rushers: rushers,
+       rushers: filter(rushers, socket.assigns.filter_text),
+       sort_by: sort_by,
+       direction: direction
+     )}
+  end
+
+  def handle_event("filter", %{"name" => val}, socket) do
+    {:noreply, assign(socket, rushers: filter(socket.assigns.rushers, val), filter_text: val)}
+  end
+
+  def filter(rushers, val) do
+    name = String.downcase(val)
+
+    Enum.filter(rushers, fn r ->
+      IO.inspect(String.contains?(String.downcase(r.player), name))
+      String.contains?(String.downcase(r.player), name)
+    end)
   end
 end
