@@ -24,8 +24,6 @@ defmodule NflRushingWeb.Rusher do
   defmemo rushers do
     {ok, json} = get_json("data/rushing.json")
 
-    IO.puts("Loading data...")
-
     rushers =
       Enum.map(json, fn rusher ->
         %NflRushingWeb.Rusher{
@@ -46,6 +44,7 @@ defmodule NflRushingWeb.Rusher do
           fum: rusher["FUM"]
         }
       end)
+      |> Enum.sort_by(& &1.player)
 
     {ok, rushers}
   end
