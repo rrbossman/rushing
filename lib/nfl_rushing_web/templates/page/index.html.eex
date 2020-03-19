@@ -3,6 +3,12 @@
   <p>A productive web framework that<br/>does not compromise speed or maintainability.</p>
 </section>
 
+<section class="phx-hero">
+  <%= Enum.map @rushers, fn(rusher) -> %>
+    <div><%= rusher.player %></div>
+  <% end %>
+</section>
+
 <section class="row">
   <article class="column">
     <h2>Resources</h2>
