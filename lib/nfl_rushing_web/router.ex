@@ -1,6 +1,8 @@
 defmodule NflRushingWeb.Router do
   use NflRushingWeb, :router
 
+  import Phoenix.LiveView.Router
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -12,7 +14,7 @@ defmodule NflRushingWeb.Router do
   scope "/", NflRushingWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    live "/", RushersLive
   end
 
   # Other scopes may use custom stacks.
