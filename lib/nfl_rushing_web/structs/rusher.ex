@@ -55,4 +55,12 @@ defmodule NflRushingWeb.Rusher do
 
     {ok, rushers}
   end
+
+  def initial_direction(att) do
+    if att == "player" or att == "team" or att == "pos" do
+      :asc
+    else
+      :desc
+    end
+  end
 end

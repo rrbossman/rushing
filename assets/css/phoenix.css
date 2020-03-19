@@ -140,10 +140,27 @@ header nav a {
 }
 
 .phx-stats-row :first-child {
-  flex: 1 1 10%;
   text-align: left;
+  padding-left: 15px;
+}
+
+.phx-stats-row :last-child {
+  padding-right: 15px;
 }
 
 .phx-stats-cell {
-  flex: 1 1 7%;
+  text-align: center;
+}
+
+.active {
+  background: #dddddd;
+}
+
+thead {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+thead td:hover {
+  color: #444444;
 }

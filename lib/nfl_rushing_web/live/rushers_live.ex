@@ -13,14 +13,17 @@ defmodule NflRushingWeb.RushersLive do
   def handle_event("sort", %{"sort-by" => sort_by}, socket) do
     {rushers, direction} =
       case {socket.assigns.sort_by, socket.assigns.direction} do
-        {sort_by, :asc} ->
+        {^sort_by, :asc} ->
+          IO.puts(1)
           {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :desc), :desc}
 
-        {sort_by, :desc} ->
+        {^sort_by, :desc} ->
+          IO.puts(2)
           {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :asc), :asc}
 
-        {x, _} ->
-          {NflRushingWeb.Rusher.sorted_by_rushers(x, :asc), :asc}
+        {_, _} ->
+          initial_direction = NflRushingWeb.Rusher.initial_direction(sort_by)
+          {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, initial_direction), initial_direction}
 
         _ ->
           {socket.assigns.rushers, socket.assigns.direction}
