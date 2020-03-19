@@ -15,6 +15,7 @@ defmodule NflRushingWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/csv", PageController, :export
     live "/rushers", RushersLive
   end
 

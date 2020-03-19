@@ -164,3 +164,7 @@ thead {
 thead td:hover {
   color: #444444;
 }
+
+.align-right {
+  text-align: right;
+}

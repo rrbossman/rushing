@@ -56,6 +56,14 @@ defmodule NflRushingWeb.Rusher do
     {ok, rushers}
   end
 
+  def filter(rushers, val) do
+    name = String.downcase(val)
+
+    Enum.filter(rushers, fn r ->
+      String.contains?(String.downcase(r.player), name)
+    end)
+  end
+
   def initial_direction(att) do
     if att == "player" or att == "team" or att == "pos" do
       :asc

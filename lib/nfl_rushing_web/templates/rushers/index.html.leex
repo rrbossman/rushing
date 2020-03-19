@@ -2,10 +2,11 @@
   <h1>NFL Rushing Statistics</h1>
 </section>
 
-<section class="phx-hero">
+<section class="phx-hero align-right">
   <form phx-change="filter">
     <input name="name" value="<%= assigns.filter_text %>" type="text" placeholder="Filter by player name..." />
   </form>
+  <a href="/csv?direction=<%= assigns.direction %>&sort_by=<%= assigns.sort_by %>&filter_text=<%= assigns.filter_text %>">Download CSV</a>
 </section>
 
 <section class="phx-hero">

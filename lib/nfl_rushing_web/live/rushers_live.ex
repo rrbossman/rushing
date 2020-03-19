@@ -35,21 +35,17 @@ defmodule NflRushingWeb.RushersLive do
     {:noreply,
      assign(socket,
        sorted_rushers: rushers,
-       rushers: filter(rushers, socket.assigns.filter_text),
+       rushers: NflRushingWeb.Rusher.filter(rushers, socket.assigns.filter_text),
        sort_by: sort_by,
        direction: direction
      )}
   end
 
   def handle_event("filter", %{"name" => val}, socket) do
-    {:noreply, assign(socket, rushers: filter(socket.assigns.rushers, val), filter_text: val)}
-  end
-
-  def filter(rushers, val) do
-    name = String.downcase(val)
-
-    Enum.filter(rushers, fn r ->
-      String.contains?(String.downcase(r.player), name)
-    end)
+    {:noreply,
+     assign(socket,
+       rushers: NflRushingWeb.Rusher.filter(socket.assigns.rushers, val),
+       filter_text: val
+     )}
   end
 end
