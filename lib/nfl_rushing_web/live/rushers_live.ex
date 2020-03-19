@@ -6,7 +6,7 @@ defmodule NflRushingWeb.RushersLive do
   end
 
   def mount(_, socket) do
-    {ok, rushers} = NflRushingWeb.Rusher.rushers()
+    {_, rushers} = NflRushingWeb.Rusher.rushers()
 
     {:ok,
      assign(socket,
@@ -30,9 +30,6 @@ defmodule NflRushingWeb.RushersLive do
         {_, _} ->
           initial_direction = NflRushingWeb.Rusher.initial_direction(sort_by)
           {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, initial_direction), initial_direction}
-
-        _ ->
-          {socket.assigns.rushers, socket.assigns.direction}
       end
 
     {:noreply,
@@ -52,7 +49,6 @@ defmodule NflRushingWeb.RushersLive do
     name = String.downcase(val)
 
     Enum.filter(rushers, fn r ->
-      IO.inspect(String.contains?(String.downcase(r.player), name))
       String.contains?(String.downcase(r.player), name)
     end)
   end
