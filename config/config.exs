@@ -7,9 +7,6 @@
 # General application configuration
 use Mix.Config
 
-config :nfl_rushing,
-  ecto_repos: [NflRushing.Repo]
-
 # Configures the endpoint
 config :nfl_rushing, NflRushingWeb.Endpoint,
   url: [host: "localhost"],
