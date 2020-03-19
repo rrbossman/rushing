@@ -15,7 +15,7 @@ defmodule NflRushingWeb.PageController do
       )
 
     csv =
-      NflRushingWeb.Rusher.filter(rushers, params["filter"] || "")
+      NflRushingWeb.Rusher.filter(rushers, params["filter_text"])
       |> Enum.map(fn r ->
         [
           r.player,

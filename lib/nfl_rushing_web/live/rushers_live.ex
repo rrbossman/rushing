@@ -44,7 +44,7 @@ defmodule NflRushingWeb.RushersLive do
   def handle_event("filter", %{"name" => val}, socket) do
     {:noreply,
      assign(socket,
-       rushers: NflRushingWeb.Rusher.filter(socket.assigns.rushers, val),
+       rushers: NflRushingWeb.Rusher.filter(socket.assigns.sorted_rushers, val),
        filter_text: val
      )}
   end
