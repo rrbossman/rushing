@@ -5,7 +5,7 @@ defmodule NflRushingWeb.RushersLive do
     Phoenix.View.render(NflRushingWeb.RushersView, "index.html", assigns)
   end
 
-  def mount(_, socket) do
+  def mount(_, _, socket) do
     {_, rushers} = NflRushingWeb.Rusher.rushers()
 
     {:ok,
