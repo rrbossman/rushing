@@ -4,50 +4,50 @@
 
 <section class="phx-hero align-right">
   <form phx-change="filter">
-    <input name="name" value="<%= assigns.filter_text %>" type="text" placeholder="Filter by player name..." />
+    <input name="name" value="<%= @filter_text %>" type="text" placeholder="Filter by player name..." />
   </form>
-  <a href="/csv?direction=<%= assigns.direction %>&sort_by=<%= assigns.sort_by %>&filter_text=<%= assigns.filter_text %>">Download CSV</a>
+  <a href="/csv?direction=<%= @direction %>&sort_by=<%= @sort_by %>&filter_text=<%= @filter_text %>">Download CSV</a>
 </section>
 
 <section class="phx-hero">
   <table class="phx-stats-container">
     <thead>
       <tr class="phx-stats-row">
-        <td phx-click="sort" phx-value-sort-by="player" class="phx-stats-cell <%= if assigns[:sort_by] == "player" do " active" end %>">Player</td>
-        <td phx-click="sort" phx-value-sort-by="team" class="phx-stats-cell <%= if assigns[:sort_by] == "team" do " active" end %>">Team</td>
-        <td phx-click="sort" phx-value-sort-by="pos" class="phx-stats-cell <%= if assigns[:sort_by] == "pos" do " active" end %>">Pos</td>
-        <td phx-click="sort" phx-value-sort-by="att" class="phx-stats-cell <%= if assigns[:sort_by] == "att" do " active" end %>">Att</td>
-        <td phx-click="sort" phx-value-sort-by="att_game" class="phx-stats-cell <%= if assigns[:sort_by] == "att_game" do " active" end %>">Att/G</td>
-        <td phx-click="sort" phx-value-sort-by="yds" class="phx-stats-cell <%= if assigns[:sort_by] == "yds" do " active" end %>">Yards</td>
-        <td phx-click="sort" phx-value-sort-by="avg" class="phx-stats-cell <%= if assigns[:sort_by] == "avg" do " active" end %>">Avg</td>
-        <td phx-click="sort" phx-value-sort-by="yds_game" class="phx-stats-cell <%= if assigns[:sort_by] == "yds_game" do " active" end %>">Yards/G</td>
-        <td phx-click="sort" phx-value-sort-by="td" class="phx-stats-cell <%= if assigns[:sort_by] == "td" do " active" end %>">TD</td>
-        <td phx-click="sort" phx-value-sort-by="lng" class="phx-stats-cell <%= if assigns[:sort_by] == "lng" do " active" end %>">Lng</td>
-        <td phx-click="sort" phx-value-sort-by="first" class="phx-stats-cell <%= if assigns[:sort_by] == "first" do " active" end %>">1st</td>
-        <td phx-click="sort" phx-value-sort-by="first_percent" class="phx-stats-cell <%= if assigns[:sort_by] == "first_percent" do " active" end %>">1st%</td>
-        <td phx-click="sort" phx-value-sort-by="twenty_plus" class="phx-stats-cell <%= if assigns[:sort_by] == "twenty_plus" do " active" end %>">20+</td>
-        <td phx-click="sort" phx-value-sort-by="forty_plus" class="phx-stats-cell <%= if assigns[:sort_by] == "forty_plus" do " active" end %>">40+</td>
-        <td phx-click="sort" phx-value-sort-by="fum" class="phx-stats-cell <%= if assigns[:sort_by] == "fum" do " active" end %>">Fum</td>
+        <td phx-click="sort" phx-value-sort-by="player" class="phx-stats-cell <%= if @sort_by == "player" do " active" end %>">Player</td>
+        <td phx-click="sort" phx-value-sort-by="team" class="phx-stats-cell <%= if @sort_by == "team" do " active" end %>">Team</td>
+        <td phx-click="sort" phx-value-sort-by="pos" class="phx-stats-cell <%= if @sort_by == "pos" do " active" end %>">Pos</td>
+        <td phx-click="sort" phx-value-sort-by="att" class="phx-stats-cell <%= if @sort_by == "att" do " active" end %>">Att</td>
+        <td phx-click="sort" phx-value-sort-by="att_game" class="phx-stats-cell <%= if @sort_by == "att_game" do " active" end %>">Att/G</td>
+        <td phx-click="sort" phx-value-sort-by="yds" class="phx-stats-cell <%= if @sort_by == "yds" do " active" end %>">Yards</td>
+        <td phx-click="sort" phx-value-sort-by="avg" class="phx-stats-cell <%= if @sort_by == "avg" do " active" end %>">Avg</td>
+        <td phx-click="sort" phx-value-sort-by="yds_game" class="phx-stats-cell <%= if @sort_by == "yds_game" do " active" end %>">Yards/G</td>
+        <td phx-click="sort" phx-value-sort-by="td" class="phx-stats-cell <%= if @sort_by == "td" do " active" end %>">TD</td>
+        <td phx-click="sort" phx-value-sort-by="lng" class="phx-stats-cell <%= if @sort_by == "lng" do " active" end %>">Lng</td>
+        <td phx-click="sort" phx-value-sort-by="first" class="phx-stats-cell <%= if @sort_by == "first" do " active" end %>">1st</td>
+        <td phx-click="sort" phx-value-sort-by="first_percent" class="phx-stats-cell <%= if @sort_by == "first_percent" do " active" end %>">1st%</td>
+        <td phx-click="sort" phx-value-sort-by="twenty_plus" class="phx-stats-cell <%= if @sort_by == "twenty_plus" do " active" end %>">20+</td>
+        <td phx-click="sort" phx-value-sort-by="forty_plus" class="phx-stats-cell <%= if @sort_by == "forty_plus" do " active" end %>">40+</td>
+        <td phx-click="sort" phx-value-sort-by="fum" class="phx-stats-cell <%= if @sort_by == "fum" do " active" end %>">Fum</td>
       </tr>
     </thead>
     <tbody>
       <%= Enum.map @rushers, fn(rusher) -> %>
         <tr class="phx-stats-row">
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "player" do " active" end %>"><%= rusher.player %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "team" do " active" end %>"><%= rusher.team %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "pos" do " active" end %>"><%= rusher.pos %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "att" do " active" end %>"><%= rusher.att %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "att_game" do " active" end %>"><%= rusher.att_game %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "yds" do " active" end %>"><%= rusher.yds %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "avg" do " active" end %>"><%= rusher.avg %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "yds_game" do " active" end %>"><%= rusher.yds_game %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "td" do " active" end %>"><%= rusher.td %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "lng" do " active" end %>"><%= rusher.lng %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "first" do " active" end %>"><%= rusher.first %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "first_percent" do " active" end %>"><%= rusher.first_percent %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "twenty_plus" do " active" end %>"><%= rusher.twenty_plus %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "forty_plus" do " active" end %>"><%= rusher.forty_plus %></td>
-          <td class="phx-stats-cell <%= if assigns[:sort_by] == "fum" do " active" end %>"><%= rusher.fum %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "player" do " active" end %>"><%= rusher.player %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "team" do " active" end %>"><%= rusher.team %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "pos" do " active" end %>"><%= rusher.pos %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "att" do " active" end %>"><%= rusher.att %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "att_game" do " active" end %>"><%= rusher.att_game %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "yds" do " active" end %>"><%= rusher.yds %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "avg" do " active" end %>"><%= rusher.avg %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "yds_game" do " active" end %>"><%= rusher.yds_game %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "td" do " active" end %>"><%= rusher.td %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "lng" do " active" end %>"><%= rusher.lng %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "first" do " active" end %>"><%= rusher.first %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "first_percent" do " active" end %>"><%= rusher.first_percent %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "twenty_plus" do " active" end %>"><%= rusher.twenty_plus %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "forty_plus" do " active" end %>"><%= rusher.forty_plus %></td>
+          <td class="phx-stats-cell <%= if @sort_by == "fum" do " active" end %>"><%= rusher.fum %></td>
         </tr>
       <% end %>
     </tbody>
