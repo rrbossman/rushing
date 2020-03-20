@@ -6,7 +6,23 @@
   <form phx-change="filter">
     <input name="name" value="<%= @filter_text %>" type="text" placeholder="Filter by player name..." />
   </form>
-  <a href="/csv?direction=<%= @direction %>&sort_by=<%= @sort_by %>&filter_text=<%= @filter_text %>">Download CSV</a>
+  <div class="phx-actions-bar">
+    <div class="phx-pagination">
+      <%= Enum.map @pagination_list, fn(page) -> %>
+        <%= cond do %>
+        <% page == "..." -> %>
+          <span>...</span>
+        <% @current_page == page -> %>
+          <span class="page-active"><%= page %></span>
+        <% true -> %>
+          <a href="#" phx-click="paginate" phx-value-page="<%= page %>"><%= page %></a>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="phx-download-csv">
+      <a href="/csv?direction=<%= @direction %>&sort_by=<%= @sort_by %>&filter_text=<%= @filter_text %>">Download CSV</a>
+    </div>
+  </div>
 </section>
 
 <section class="phx-hero">

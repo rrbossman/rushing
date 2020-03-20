@@ -165,6 +165,27 @@ thead td:hover {
   color: #444444;
 }
 
-.align-right {
+.phx-actions-bar {
+  width: 100%;
+  margin-bottom: 15px;
+  display: flex;
+}
+
+.phx-pagination {
+  flex: 0 0 80%;
+  display: flex;
+}
+
+.phx-pagination span, .phx-pagination a {
+  padding: 5px 10px;
+}
+
+.phx-download-csv {
+  padding: 5px 10px;
+  flex: 0 0 20%;
   text-align: right;
+}
+
+.page-active {
+  font-weight: 500;
 }
