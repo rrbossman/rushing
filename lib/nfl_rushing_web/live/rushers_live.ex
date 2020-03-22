@@ -32,41 +32,6 @@ defmodule NflRushingWeb.RushersLive do
      )}
   end
 
-  def paginate(rushers, filter_text, pagination_config) do
-    pagination =
-      Scrivener.paginate(
-        NflRushingWeb.Rusher.filter(rushers, filter_text),
-        pagination_config
-      )
-
-    {pagination,
-     create_pagination_list(
-       [],
-       pagination.page_number,
-       round(pagination.total_pages / 2),
-       pagination.total_pages,
-       pagination.total_pages
-     )}
-  end
-
-  def create_pagination_list(list, _, _, _, n) when n < 1 do
-    list
-  end
-
-  def create_pagination_list(list, cp, m, tp, n) do
-    cond do
-      n <= 3 || (n <= 5 && cp <= 3) || n == tp || (n >= cp - @page_delta && n <= cp + @page_delta) ||
-          (n >= m - @page_delta && n <= m + @page_delta) ->
-        create_pagination_list([n | list], cp, m, tp, n - 1)
-
-      List.first(list) != "..." ->
-        create_pagination_list(["..." | list], cp, m, tp, n - 1)
-
-      true ->
-        create_pagination_list(list, cp, m, tp, n - 1)
-    end
-  end
-
   def handle_event("sort", %{"sort-by" => sort_by}, socket) do
     {rushers, direction} =
       case {socket.assigns.sort_by, socket.assigns.direction} do
@@ -131,5 +96,40 @@ defmodule NflRushingWeb.RushersLive do
        pagination_config: %{page: page, page_size: @page_size},
        current_page: page
      )}
+  end
+
+  defp paginate(rushers, filter_text, pagination_config) do
+    pagination =
+      Scrivener.paginate(
+        NflRushingWeb.Rusher.filter(rushers, filter_text),
+        pagination_config
+      )
+
+    {pagination,
+     create_pagination_list(
+       [],
+       pagination.page_number,
+       round(pagination.total_pages / 2),
+       pagination.total_pages,
+       pagination.total_pages
+     )}
+  end
+
+  defp create_pagination_list(list, _, _, _, n) when n < 1 do
+    list
+  end
+
+  defp create_pagination_list(list, cp, m, tp, n) do
+    cond do
+      n <= 3 || (n <= 5 && cp <= 3) || n == tp || (n >= cp - @page_delta && n <= cp + @page_delta) ||
+          (n >= m - @page_delta && n <= m + @page_delta) ->
+        create_pagination_list([n | list], cp, m, tp, n - 1)
+
+      List.first(list) != "..." ->
+        create_pagination_list(["..." | list], cp, m, tp, n - 1)
+
+      true ->
+        create_pagination_list(list, cp, m, tp, n - 1)
+    end
   end
 end
