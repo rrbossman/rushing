@@ -47,7 +47,7 @@
       </tr>
     </thead>
     <tbody>
-      <%= Enum.map @rushers, fn(rusher) -> %>
+      <%= Enum.map @paged_rushers, fn(rusher) -> %>
         <tr class="phx-stats-row">
           <td class="phx-stats-cell <%= if @sort_by == "player" do " active" end %>"><%= rusher.player %></td>
           <td class="phx-stats-cell <%= if @sort_by == "team" do " active" end %>"><%= rusher.team %></td>

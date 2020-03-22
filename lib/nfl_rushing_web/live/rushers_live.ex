@@ -22,13 +22,12 @@ defmodule NflRushingWeb.RushersLive do
     {:ok,
      assign(socket,
        sorted_rushers: rushers,
-       rushers: paged_rushers,
+       paged_rushers: paged_rushers,
        pagination_list: pagination_list,
        sort_by: "player",
        direction: :asc,
        filter_text: "",
        current_page: 1,
-       pagination_config: %{page: @page_number, page_size: @page_size},
        timer_ref: nil,
        loading: false
      )}
@@ -74,7 +73,7 @@ defmodule NflRushingWeb.RushersLive do
     {:noreply,
      assign(socket,
        sorted_rushers: rushers,
-       rushers: paged_rushers,
+       paged_rushers: paged_rushers,
        pagination_list: pagination_list,
        direction: new_direction,
        loading: false,
@@ -104,7 +103,7 @@ defmodule NflRushingWeb.RushersLive do
 
     {:noreply,
      assign(socket,
-       rushers: paged_rushers,
+       paged_rushers: paged_rushers,
        pagination_list: pagination_list,
        loading: false,
        timer_ref: nil
@@ -137,9 +136,8 @@ defmodule NflRushingWeb.RushersLive do
 
     {:noreply,
      assign(socket,
-       rushers: paged_rushers,
+       paged_rushers: paged_rushers,
        pagination_list: pagination_list,
-       pagination_config: %{page: current_page, page_size: @page_size},
        loading: false,
        timer_ref: nil
      )}
