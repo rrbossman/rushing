@@ -189,3 +189,13 @@ thead td:hover {
 .page-active {
   font-weight: 500;
 }
+
+.phx-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.3);
+}

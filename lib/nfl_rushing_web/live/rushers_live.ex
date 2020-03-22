@@ -34,18 +34,25 @@ defmodule NflRushingWeb.RushersLive do
      )}
   end
 
-  def handle_event("sort", %{"sort-by" => sort_by}, socket) do
+  def handle_event("sort", %{"sort-by" => sort_by}, %{assigns: %{loading: false}} = socket) do
+    timer_ref = Process.send_after(self(), :sort, 0)
+    {:noreply, assign(socket, sort_by: sort_by, timer_ref: timer_ref, loading: true)}
+  end
+
+  def handle_info(:sort, socket) do
     {rushers, direction} =
       case {socket.assigns.sort_by, socket.assigns.direction} do
-        {^sort_by, :asc} ->
-          {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :desc), :desc}
+        :asc ->
+          {NflRushingWeb.Rusher.sorted_by_rushers(socket.assigns.sort_by, :desc), :desc}
 
-        {^sort_by, :desc} ->
-          {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :asc), :asc}
+        :desc ->
+          {NflRushingWeb.Rusher.sorted_by_rushers(socket.assigns.sort_by, :asc), :asc}
 
-        {_, _} ->
-          initial_direction = NflRushingWeb.Rusher.initial_direction(sort_by)
-          {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, initial_direction), initial_direction}
+        _ ->
+          initial_direction = NflRushingWeb.Rusher.initial_direction(socket.assigns.sort_by)
+
+          {NflRushingWeb.Rusher.sorted_by_rushers(socket.assigns.sort_by, initial_direction),
+           initial_direction}
       end
 
     {paged_rushers, pagination_list} =
@@ -60,8 +67,9 @@ defmodule NflRushingWeb.RushersLive do
        sorted_rushers: rushers,
        rushers: paged_rushers,
        pagination_list: pagination_list,
-       sort_by: sort_by,
-       direction: direction
+       direction: direction,
+       loading: false,
+       timer_ref: nil
      )}
   end
 
@@ -86,26 +94,33 @@ defmodule NflRushingWeb.RushersLive do
      assign(socket,
        rushers: paged_rushers,
        pagination_list: pagination_list,
-       loading: false
+       loading: false,
+       timer_ref: nil
      )}
   end
 
-  def handle_event("paginate", %{"page" => val}, socket) do
-    {page, _} = Integer.parse(val)
+  def handle_event("paginate", %{"page" => page}, %{assigns: %{loading: false}} = socket) do
+    timer_ref = Process.send_after(self(), :paginate, 0)
 
+    {:noreply,
+     assign(socket, current_page: Integer.parse(page), timer_ref: timer_ref, loading: true)}
+  end
+
+  def handle_info(:paginate, socket) do
     {paged_rushers, pagination_list} =
       paginate(
         NflRushingWeb.Rusher.filter(socket.assigns.sorted_rushers, socket.assigns.filter_text),
         socket.assigns.filter_text,
-        %{page: page, page_size: @page_size}
+        %{page: socket.assigns.current_page, page_size: @page_size}
       )
 
     {:noreply,
      assign(socket,
        rushers: paged_rushers,
        pagination_list: pagination_list,
-       pagination_config: %{page: page, page_size: @page_size},
-       current_page: page
+       pagination_config: %{page: socket.assigns.current_page, page_size: @page_size},
+       loading: false,
+       timer_ref: nil
      )}
   end
 
