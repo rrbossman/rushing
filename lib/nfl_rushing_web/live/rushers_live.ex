@@ -161,7 +161,7 @@ defmodule NflRushingWeb.RushersLive do
      )}
   end
 
-  defp create_pagination_list(list, _, _, _, n) when n < 1 do
+  defp create_pagination_list(list, _, _, tp, n) when n < 1 or tp == 1 do
     list
   end
 
