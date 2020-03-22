@@ -28,7 +28,9 @@ defmodule NflRushingWeb.RushersLive do
        direction: :asc,
        filter_text: "",
        current_page: 1,
-       pagination_config: %{page: @page_number, page_size: @page_size}
+       pagination_config: %{page: @page_number, page_size: @page_size},
+       timer_ref: nil,
+       loading: false
      )}
   end
 
@@ -63,19 +65,28 @@ defmodule NflRushingWeb.RushersLive do
      )}
   end
 
-  def handle_event("filter", %{"name" => val}, socket) do
+  def handle_event("filter", %{"name" => val}, %{assigns: %{loading: true}} = socket) do
+    {:noreply, assign(socket, filter_text: val)}
+  end
+
+  def handle_event("filter", %{"name" => val}, %{assigns: %{loading: false}} = socket) do
+    timer_ref = Process.send_after(self(), :filter, 700)
+    {:noreply, assign(socket, filter_text: val, timer_ref: timer_ref, loading: true)}
+  end
+
+  def handle_info(:filter, socket) do
     {paged_rushers, pagination_list} =
       paginate(
         socket.assigns.sorted_rushers,
-        val,
-        socket.assigns.pagination_config
+        socket.assigns.filter_text,
+        %{page: @page_number, page_size: @page_size}
       )
 
     {:noreply,
      assign(socket,
        rushers: paged_rushers,
        pagination_list: pagination_list,
-       filter_text: val
+       loading: false
      )}
   end
 
