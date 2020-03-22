@@ -39,27 +39,36 @@ defmodule NflRushingWeb.RushersLive do
     {:noreply, assign(socket, sort_by: sort_by, timer_ref: timer_ref, loading: true)}
   end
 
-  def handle_info(:sort, socket) do
-    {rushers, direction} =
-      case {socket.assigns.sort_by, socket.assigns.direction} do
+  def handle_info(
+        :sort,
+        %{
+          assigns: %{
+            :direction => direction,
+            :sort_by => sort_by,
+            :current_page => current_page,
+            :filter_text => filter_text
+          }
+        } = socket
+      ) do
+    {rushers, new_direction} =
+      case direction do
         :asc ->
-          {NflRushingWeb.Rusher.sorted_by_rushers(socket.assigns.sort_by, :desc), :desc}
+          {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :desc), :desc}
 
         :desc ->
-          {NflRushingWeb.Rusher.sorted_by_rushers(socket.assigns.sort_by, :asc), :asc}
+          {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, :asc), :asc}
 
         _ ->
-          initial_direction = NflRushingWeb.Rusher.initial_direction(socket.assigns.sort_by)
+          initial_direction = NflRushingWeb.Rusher.initial_direction(sort_by)
 
-          {NflRushingWeb.Rusher.sorted_by_rushers(socket.assigns.sort_by, initial_direction),
-           initial_direction}
+          {NflRushingWeb.Rusher.sorted_by_rushers(sort_by, initial_direction), initial_direction}
       end
 
     {paged_rushers, pagination_list} =
       paginate(
         rushers,
-        socket.assigns.filter_text,
-        socket.assigns.pagination_config
+        filter_text,
+        %{page: current_page, page_size: @page_size}
       )
 
     {:noreply,
@@ -67,7 +76,7 @@ defmodule NflRushingWeb.RushersLive do
        sorted_rushers: rushers,
        rushers: paged_rushers,
        pagination_list: pagination_list,
-       direction: direction,
+       direction: new_direction,
        loading: false,
        timer_ref: nil
      )}
@@ -82,11 +91,14 @@ defmodule NflRushingWeb.RushersLive do
     {:noreply, assign(socket, filter_text: val, timer_ref: timer_ref, loading: true)}
   end
 
-  def handle_info(:filter, socket) do
+  def handle_info(
+        :filter,
+        %{assigns: %{:sorted_rushers => sorted_rushers, :filter_text => filter_text}} = socket
+      ) do
     {paged_rushers, pagination_list} =
       paginate(
-        socket.assigns.sorted_rushers,
-        socket.assigns.filter_text,
+        sorted_rushers,
+        filter_text,
         %{page: @page_number, page_size: @page_size}
       )
 
@@ -106,19 +118,28 @@ defmodule NflRushingWeb.RushersLive do
      assign(socket, current_page: Integer.parse(page), timer_ref: timer_ref, loading: true)}
   end
 
-  def handle_info(:paginate, socket) do
+  def handle_info(
+        :paginate,
+        %{
+          assigns: %{
+            :sorted_rushers => sorted_rushers,
+            :filter_text => filter_text,
+            :current_page => current_page
+          }
+        } = socket
+      ) do
     {paged_rushers, pagination_list} =
       paginate(
-        NflRushingWeb.Rusher.filter(socket.assigns.sorted_rushers, socket.assigns.filter_text),
-        socket.assigns.filter_text,
-        %{page: socket.assigns.current_page, page_size: @page_size}
+        NflRushingWeb.Rusher.filter(sorted_rushers, filter_text),
+        filter_text,
+        %{page: current_page, page_size: @page_size}
       )
 
     {:noreply,
      assign(socket,
        rushers: paged_rushers,
        pagination_list: pagination_list,
-       pagination_config: %{page: socket.assigns.current_page, page_size: @page_size},
+       pagination_config: %{page: current_page, page_size: @page_size},
        loading: false,
        timer_ref: nil
      )}
