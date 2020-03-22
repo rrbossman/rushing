@@ -22,7 +22,7 @@ defmodule NflRushingWeb.Rusher do
   end
 
   def sorted_by_rushers(sort_by, direction) do
-    {ok, list} = rushers
+    {ok, list} = rushers()
 
     # not performant
     list |> Enum.sort_by(&Map.get(&1, String.to_existing_atom(sort_by)), direction)

@@ -113,9 +113,8 @@ defmodule NflRushingWeb.RushersLive do
 
   def handle_event("paginate", %{"page" => page}, %{assigns: %{loading: false}} = socket) do
     timer_ref = Process.send_after(self(), :paginate, 0)
-
-    {:noreply,
-     assign(socket, current_page: Integer.parse(page), timer_ref: timer_ref, loading: true)}
+    {current_page, _} = Integer.parse(page)
+    {:noreply, assign(socket, current_page: current_page, timer_ref: timer_ref, loading: true)}
   end
 
   def handle_info(
