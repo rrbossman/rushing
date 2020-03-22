@@ -98,13 +98,14 @@ defmodule NflRushingWeb.RushersLive do
       paginate(
         sorted_rushers,
         filter_text,
-        %{page: @page_number, page_size: @page_size}
+        %{page: 1, page_size: @page_size}
       )
 
     {:noreply,
      assign(socket,
        paged_rushers: paged_rushers,
        pagination_list: pagination_list,
+       current_page: 1,
        loading: false,
        timer_ref: nil
      )}
